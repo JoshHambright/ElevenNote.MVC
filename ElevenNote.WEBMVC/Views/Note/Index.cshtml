@@ -46,7 +46,7 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsStarred)
+                @Html.DisplayFor(modelItem => item.IsStarred, new { Id = item.NoteID })
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedUtc)
@@ -60,7 +60,7 @@
     }
 
 </table>
-@section scripts{
+@section scripts {
     <script language="javascript" type="text/javascript">
         $(document).ready(function () {
             $("i[data-toggle='star']")
