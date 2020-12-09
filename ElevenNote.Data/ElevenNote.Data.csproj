@@ -66,26 +66,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Category.cs" />
     <Compile Include="IdentityModels.cs" />
-    <Compile Include="Migrations\202012091313195_InitialCreate.cs" />
-    <Compile Include="Migrations\202012091313195_InitialCreate.Designer.cs">
-      <DependentUpon>202012091313195_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202012091326270_one.cs" />
-    <Compile Include="Migrations\202012091326270_one.Designer.cs">
-      <DependentUpon>202012091326270_one.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202012091353272_one1.cs" />
-    <Compile Include="Migrations\202012091353272_one1.Designer.cs">
-      <DependentUpon>202012091353272_one1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202012091354327_two.cs" />
-    <Compile Include="Migrations\202012091354327_two.Designer.cs">
-      <DependentUpon>202012091354327_two.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202012091635125_three.cs" />
-    <Compile Include="Migrations\202012091635125_three.Designer.cs">
-      <DependentUpon>202012091635125_three.cs</DependentUpon>
+    <Compile Include="Migrations\202012092203209_one.cs" />
+    <Compile Include="Migrations\202012092203209_one.Designer.cs">
+      <DependentUpon>202012092203209_one.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Note.cs" />
@@ -96,20 +81,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202012091313195_InitialCreate.resx">
-      <DependentUpon>202012091313195_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012091326270_one.resx">
-      <DependentUpon>202012091326270_one.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012091353272_one1.resx">
-      <DependentUpon>202012091353272_one1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012091354327_two.resx">
-      <DependentUpon>202012091354327_two.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012091635125_three.resx">
-      <DependentUpon>202012091635125_three.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202012092203209_one.resx">
+      <DependentUpon>202012092203209_one.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

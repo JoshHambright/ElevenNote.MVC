@@ -3,10 +3,20 @@ namespace ElevenNote.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialCreate : DbMigration
+    public partial class one : DbMigration
     {
         public override void Up()
         {
+            CreateTable(
+                "dbo.Category",
+                c => new
+                    {
+                        CategoryID = c.Int(nullable: false, identity: true),
+                        OwnerID = c.Guid(nullable: false),
+                        Name = c.String(nullable: false),
+                    })
+                .PrimaryKey(t => t.CategoryID);
+            
             CreateTable(
                 "dbo.Note",
                 c => new
@@ -14,11 +24,15 @@ namespace ElevenNote.Data.Migrations
                         NoteID = c.Int(nullable: false, identity: true),
                         OwnerID = c.Guid(nullable: false),
                         Title = c.String(nullable: false, maxLength: 150),
-                        Content = c.String(nullable: false, maxLength: 2000),
+                        Content = c.String(nullable: false),
                         CreatedUtc = c.DateTimeOffset(nullable: false, precision: 7),
                         ModifiedUtc = c.DateTimeOffset(precision: 7),
+                        IsStarred = c.Boolean(nullable: false),
+                        CategoryId = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.NoteID);
+                .PrimaryKey(t => t.NoteID)
+                .ForeignKey("dbo.Category", t => t.CategoryId, cascadeDelete: true)
+                .Index(t => t.CategoryId);
             
             CreateTable(
                 "dbo.IdentityRole",
@@ -98,16 +112,19 @@ namespace ElevenNote.Data.Migrations
             DropForeignKey("dbo.IdentityUserLogin", "ApplicationUser_Id", "dbo.ApplicationUser");
             DropForeignKey("dbo.IdentityUserClaim", "ApplicationUser_Id", "dbo.ApplicationUser");
             DropForeignKey("dbo.IdentityUserRole", "IdentityRole_Id", "dbo.IdentityRole");
+            DropForeignKey("dbo.Note", "CategoryId", "dbo.Category");
             DropIndex("dbo.IdentityUserLogin", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.IdentityUserClaim", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.IdentityUserRole", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.IdentityUserRole", new[] { "IdentityRole_Id" });
+            DropIndex("dbo.Note", new[] { "CategoryId" });
             DropTable("dbo.IdentityUserLogin");
             DropTable("dbo.IdentityUserClaim");
             DropTable("dbo.ApplicationUser");
             DropTable("dbo.IdentityUserRole");
             DropTable("dbo.IdentityRole");
             DropTable("dbo.Note");
+            DropTable("dbo.Category");
         }
     }
 }
