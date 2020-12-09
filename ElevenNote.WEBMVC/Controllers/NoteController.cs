@@ -30,7 +30,7 @@ namespace ElevenNote.WEBMVC.Controllers
         // Get: Note/Details/{id}
         public ActionResult Details(int id)
         {
-            
+
             var svc = CreateNoteService();
             var model = svc.GetNoteById(id);
 
@@ -64,6 +64,61 @@ namespace ElevenNote.WEBMVC.Controllers
             ModelState.AddModelError("", "Note could not be created.");
             return View(note);
 
+        }
+
+        //Get Note/Edit/{id}
+        public ActionResult Edit(int id)
+        {
+            var service = CreateNoteService();
+            var detail = service.GetNoteById(id);
+            var model =
+                new NoteEdit
+                {
+                    NoteId = detail.NoteID,
+                    Title = detail.Title,
+                    Content = detail.Content
+                };
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, NoteEdit note)
+        {
+            if (!ModelState.IsValid) return View(note);
+            if(note.NoteId != id)
+            {
+                ModelState.AddModelError("", "ID Mismatch");
+                return View(note);
+            }
+            var service = CreateNoteService();
+            if (service.UpdateNote(note))
+            {
+                TempData["SaveResult"] = "Your note was successfully updated.";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", "Your note could not be updated.");
+            return View(note);
+        }
+
+        //Get Note/Delete/{id}
+        public ActionResult Delete(int id)
+        {
+            var service = CreateNoteService();
+            var detail = service.GetNoteById(id);
+            return View(detail);
+        }
+
+        //Post Note/Delete/{id}
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeletePost(int id)
+        {
+            var service = CreateNoteService();
+            service.DeleteNote(id);
+            TempData["SaveResult"] = "Your note was successfully deleted.";
+
+            return RedirectToAction("Index");
         }
     }
 }
