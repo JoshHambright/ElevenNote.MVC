@@ -74,7 +74,7 @@ namespace ElevenNote.WEBMVC.Controllers
             var model =
                 new NoteEdit
                 {
-                    NoteId = detail.NoteID,
+                    NoteID = detail.NoteID,
                     Title = detail.Title,
                     Content = detail.Content
                 };
@@ -85,7 +85,7 @@ namespace ElevenNote.WEBMVC.Controllers
         public ActionResult Edit(int id, NoteEdit note)
         {
             if (!ModelState.IsValid) return View(note);
-            if(note.NoteId != id)
+            if(note.NoteID != id)
             {
                 ModelState.AddModelError("", "ID Mismatch");
                 return View(note);

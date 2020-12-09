@@ -9,7 +9,7 @@ namespace ElevenNote.Models.NoteModels
 {
     public class NoteEdit
     {
-        public int NoteId { get; set; }
+        public int NoteID { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         [UIHint("Starred")]

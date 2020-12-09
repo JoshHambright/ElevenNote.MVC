@@ -16,31 +16,34 @@ namespace ElevenNote.WEBMVC.Controllers.WebAPI
     {
         private bool SetStarState(int noteId, bool newState)
         {
-            //Create the service
+            // Create the service
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new NoteService(userId);
 
-            //Get the Note
+            // Get the note
             var detail = service.GetNoteById(noteId);
 
-            //Create NoteEdit model isntance with new star state
-            var updateNote =
-                    new NoteEdit
-                    {
-                        NoteId = detail.NoteID,
-                        Title = detail.Title,
-                        Content = detail.Content,
-                        IsStarred = newState
-                    };
-            //Return a value indicating whether the update succeeded
-            return service.UpdateNote(updateNote);
+            // Create the NoteEdit model instance with the new star state
+            var updatedNote =
+                new NoteEdit
+                {
+                    NoteID = detail.NoteID,
+                    Title = detail.Title,
+                    Content = detail.Content,
+                    IsStarred = newState
+                };
+
+            // Return a value indicating whether the update succeeded
+            return service.UpdateNote(updatedNote);
         }
+
         [Route("{id}/Star")]
         [HttpPut]
         public bool ToggleStarOn(int id) => SetStarState(id, true);
+
         [Route("{id}/Star")]
         [HttpDelete]
         public bool ToggleStarOff(int id) => SetStarState(id, false);
-
     }
 }
+

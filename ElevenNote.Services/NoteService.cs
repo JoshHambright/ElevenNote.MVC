@@ -86,12 +86,13 @@ namespace ElevenNote.Services
                 var entity =
                     ctx
                         .Notes
-                        .Single(e => e.NoteID == note.NoteId && e.OwnerID == _userId);
+                        .Single(e => e.NoteID == note.NoteID && e.OwnerID == _userId);
                 entity.Title = note.Title;
                 entity.Content = note.Content;
                 entity.ModifiedUtc = DateTimeOffset.Now;
-                ctx.Entry(entity).State = EntityState.Modified;
-                
+                entity.IsStarred = note.IsStarred;
+
+                //ctx.Entry(entity).State = EntityState.Modified;
                 return ctx.SaveChanges() == 1;
             }
         }
