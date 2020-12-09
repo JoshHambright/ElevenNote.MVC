@@ -20,7 +20,8 @@ namespace ElevenNote.Data
         [Display(Name = "Note Title")]
         public string Title { get; set; }
         [Required]
-        [MaxLength(2000, ErrorMessage = "There are too many characters in this field.")]
+        [DataType(DataType.MultilineText)]
+        [MaxLength(8000, ErrorMessage = "There are too many characters in this field.")]
         [Display(Name = "Note")]
         public string Content { get; set; }
         [Required]
