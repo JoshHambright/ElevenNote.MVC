@@ -75,7 +75,7 @@
 
                     $.ajax({
                         method: starSet ? "DELETE" : "PUT",
-                        url: "/api/note/" + noteID + "/star",
+                        url: "/api/note/" + noteID + "/starAsync",
                         data: null
                     })
                         .done(function (r) {

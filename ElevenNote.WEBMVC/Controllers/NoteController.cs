@@ -66,17 +66,29 @@ namespace ElevenNote.WEBMVC.Controllers
 
         //    return View();
         //}
-        public async Task<SelectList> GetCategoriesAsync()
+        public async Task<IEnumerable<SelectListItem>> GetCategoriesAsync()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
             var catService = new CategoryService(userId);
-            var categoryList = new SelectList(await catService.GetCategoriesAsync(), "CategoryID", "Name");
-            return categoryList;
+            var categoryList = await catService.GetCategoriesAsync();
+
+            var catSelectList = categoryList.Select(
+                                        e =>
+                                            new SelectListItem
+                                            {
+                                                Value = e.CategoryID.ToString(),
+                                                Text = e.Name
+                                            }
+                                        ).ToList();
+                
+            return catSelectList;
         }
         public async Task<ActionResult> Create()
         {
             var service = CreateNoteService();
-            ViewBag.CategoryList = await GetCategoriesAsync();
+           
+            ViewBag.SyncOrAsync = "Asynchronous";
+            ViewBag.CategoryID = await GetCategoriesAsync();
 
             return View();
         }
@@ -112,7 +124,7 @@ namespace ElevenNote.WEBMVC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.CategoryList = GetCategoriesAsync();
+                ViewBag.CategoryID = await GetCategoriesAsync();
                 return View(note);
 
             }
@@ -127,7 +139,7 @@ namespace ElevenNote.WEBMVC.Controllers
             }
 
             ModelState.AddModelError("", "Note could not be created.");
-            ViewBag.CategoryList = GetCategoriesAsync();
+            ViewBag.CategoryID = await GetCategoriesAsync();
 
             return View(note);
         }
@@ -162,7 +174,8 @@ namespace ElevenNote.WEBMVC.Controllers
                     Content = detail.Content,
                     CategoryID = detail.CategoryID
                 };
-            ViewBag.CategoryList = GetCategoriesAsync();
+            //ViewBag.SyncOrAsync = "Asynchronous";
+            ViewBag.CategoryID = await GetCategoriesAsync();
 
             return View(model);
         }
@@ -197,7 +210,7 @@ namespace ElevenNote.WEBMVC.Controllers
             if (note.NoteID != id)
             {
                 ModelState.AddModelError("", "ID Mismatch");
-                ViewBag.CategoryList = GetCategoriesAsync();
+                ViewBag.CategoryID = await GetCategoriesAsync();
 
                 return View(note);
             }
@@ -207,7 +220,7 @@ namespace ElevenNote.WEBMVC.Controllers
                 TempData["SaveResult"] = "Your note was successfully updated.";
                 return RedirectToAction("Index");
             }
-            ViewBag.CategoryList = GetCategoriesAsync();
+            ViewBag.CategoryID = await GetCategoriesAsync();
             ModelState.AddModelError("", "Your note could not be updated.");
             return View(note);
         }

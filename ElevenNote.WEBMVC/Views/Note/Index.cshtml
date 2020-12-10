@@ -78,7 +78,7 @@
                     var starSet = target.hasClass("glyphicon-star");
 
                     $.ajax({
-                        method: starSetAsync ? "DELETE" : "PUT",
+                        method: starSet ? "DELETE" : "PUT",
                         url: "/api/note/" + noteID + "/starAsync",
                         data: null
                     })

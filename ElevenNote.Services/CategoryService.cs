@@ -89,6 +89,7 @@ namespace ElevenNote.Services
                 return query;
             }
         }
+        
         public async Task<CategoryDetails> GetCategoryByIdAsync(int id)
         {
             using (var ctx = new ApplicationDbContext())
@@ -115,6 +116,7 @@ namespace ElevenNote.Services
                     };
             }
         }
+        
         public CategoryDetails GetCategoryByID(int id)
         {
             using (var ctx = new ApplicationDbContext())
