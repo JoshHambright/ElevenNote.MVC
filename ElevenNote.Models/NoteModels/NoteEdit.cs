@@ -14,5 +14,6 @@ namespace ElevenNote.Models.NoteModels
         public string Content { get; set; }
         [UIHint("Starred")]
         public bool IsStarred { get; set; }
+        public int CategoryID { get; set; }
     }
 }

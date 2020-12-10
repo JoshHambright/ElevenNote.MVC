@@ -16,5 +16,7 @@ namespace ElevenNote.Models.NoteModels
         [MaxLength(8000, ErrorMessage ="Note Content exceeds maximum length, please limit notes to 8000 characters")]
         [DataType(DataType.MultilineText)]
         public string Content { get; set; }
+        [Display(Name = "Category")]
+        public int CategoryID { get; set; }
     }
 }
