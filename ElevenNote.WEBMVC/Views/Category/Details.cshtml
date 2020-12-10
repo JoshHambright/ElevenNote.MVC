@@ -48,7 +48,7 @@
             <dt>@Html.DisplayNameFor(modelItem => item.Title)</dt>
             <dd>@Html.DisplayFor(modelItem => item.Title)</dd>
             <dd></dd>
-            <dd>@Html.ActionLink("View Note","Note/Details", new { item.NoteID })</dd>
+            <dd>@Html.ActionLink("View Note","Details", "Note", new { id = item.NoteID }, null)</dd>
         }
 
     </dl>

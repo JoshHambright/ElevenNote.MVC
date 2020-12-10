@@ -18,6 +18,24 @@ namespace ElevenNote.Services
             _userId = userID;
         }
 
+        public async Task<bool> CreateNoteAsync(NoteCreate model)
+        {
+            var entity =
+                new Note()
+                {
+                    OwnerID = _userId,
+                    Title = model.Title,
+                    Content = model.Content,
+                    CreatedUtc = DateTimeOffset.Now,
+                    CategoryId = model.CategoryID
+                };
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                ctx.Notes.Add(entity);
+                return await ctx.SaveChangesAsync() == 1;
+            }
+        }
         public bool CreateNote(NoteCreate model)
         {
             var entity =
@@ -26,13 +44,37 @@ namespace ElevenNote.Services
                     OwnerID = _userId,
                     Title = model.Title,
                     Content = model.Content,
-                    CreatedUtc = DateTimeOffset.Now
+                    CreatedUtc = DateTimeOffset.Now,
+                    CategoryId = model.CategoryID
                 };
 
             using (var ctx = new ApplicationDbContext())
             {
                 ctx.Notes.Add(entity);
                 return ctx.SaveChanges() == 1;
+            }
+        }
+
+        public async Task<IEnumerable<NoteListItem>> GetNotesAsync()
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query = await
+                    ctx
+                        .Notes
+                        .Where(e => e.OwnerID == _userId)
+                        .Select(
+                            e =>
+                                new NoteListItem
+                                {
+                                    NoteID = e.NoteID,
+                                    Title = e.Title,
+                                    IsStarred = e.IsStarred,
+                                    CreatedUtc = e.CreatedUtc,
+                                    CategoryName = e.Category.Name
+                                }
+                        ).ToListAsync();
+                return query.OrderBy(e => e.NoteID);
             }
         }
 
@@ -51,13 +93,37 @@ namespace ElevenNote.Services
                                     NoteID = e.NoteID,
                                     Title = e.Title,
                                     IsStarred = e.IsStarred,
-                                    CreatedUtc = e.CreatedUtc
+                                    CreatedUtc = e.CreatedUtc,
+                                    CategoryName = e.Category.Name
                                 }
                         );
                 return query.ToList().OrderBy(e => e.NoteID);
             }
         }
+        public async Task<NoteDetail> GetNoteByIdAsync(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
 
+                var entity = await
+                    ctx
+                        .Notes
+                        .Where(e => e.NoteID == id && e.OwnerID == _userId)
+                        .FirstOrDefaultAsync();
+                return
+                    new NoteDetail
+                    {
+                        NoteID = entity.NoteID,
+                        Title = entity.Title,
+                        Content = entity.Content,
+                        CreatedUtc = entity.CreatedUtc,
+                        ModifiedUtc = entity.ModifiedUtc,
+                        IsStarred = entity.IsStarred,
+                        CategoryID = entity.CategoryId,
+                        CategoryName = entity.Category.Name
+                    };
+            }
+        }
         public NoteDetail GetNoteById(int id)
         {
             using (var ctx = new ApplicationDbContext())
@@ -75,8 +141,29 @@ namespace ElevenNote.Services
                         Content = entity.Content,
                         CreatedUtc = entity.CreatedUtc,
                         ModifiedUtc = entity.ModifiedUtc,
-                        IsStarred = entity.IsStarred
+                        IsStarred = entity.IsStarred,
+                        CategoryID = entity.CategoryId,
+                        CategoryName = entity.Category.Name
                     };
+            }
+        }
+        public async Task<bool> UpdateNoteAsync(NoteEdit note)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity = await
+                    ctx
+                        .Notes
+                        .Where(e => e.NoteID == note.NoteID && e.OwnerID == _userId)
+                        .FirstOrDefaultAsync();
+                entity.Title = note.Title;
+                entity.Content = note.Content;
+                entity.ModifiedUtc = DateTimeOffset.Now;
+                entity.IsStarred = note.IsStarred;
+                entity.CategoryId = note.CategoryID;
+
+                //ctx.Entry(entity).State = EntityState.Modified;
+                return await ctx.SaveChangesAsync() == 1;
             }
         }
         public bool UpdateNote(NoteEdit note)
@@ -91,12 +178,28 @@ namespace ElevenNote.Services
                 entity.Content = note.Content;
                 entity.ModifiedUtc = DateTimeOffset.Now;
                 entity.IsStarred = note.IsStarred;
+                entity.CategoryId = note.CategoryID;
 
                 //ctx.Entry(entity).State = EntityState.Modified;
                 return ctx.SaveChanges() == 1;
             }
         }
+        public async Task<bool> DeleteNoteAsync(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity = await
+                    ctx
+                        .Notes
+                        .Where(e => e.NoteID == id && e.OwnerID == _userId)
+                        .FirstOrDefaultAsync();
 
+                ctx.Notes.Remove(entity);
+
+                return await ctx.SaveChangesAsync() == 1;
+            }
+        }
+    
         public bool DeleteNote(int id)
         {
             using (var ctx = new ApplicationDbContext())

@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-color: indianred;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -22,4 +23,36 @@ select,
 textarea {
     max-width: 280px;
     resize: none;
+}
+table{
+    background-color: darkgrey;
+}
+.jumbotron{
+    background-color: darkgray
+}
+a{
+    color: black
+}
+
+a:active, a:hover{
+    color: darkslategrey;
+    text-decoration: none;
+}
+
+.navbar-inverse{
+    background-color: firebrick;
+    border:0px;
+}
+.navbar-toggle{
+    border:0px;
+}
+.navbar-inverse .navbar-brand {
+    color: black;
+}
+
+.navbar-inverse .navbar-brand:hover {
+    color: darkslategray;
+}
+.navbar-inverse .navbar-nav > li > a {
+    color: black;
 }

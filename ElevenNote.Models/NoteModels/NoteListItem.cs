@@ -18,5 +18,7 @@ namespace ElevenNote.Models.NoteModels
         public bool IsStarred { get; set; }
         [Display(Name = "Created")]
         public DateTimeOffset CreatedUtc { get; set; }
+        [Display(Name = "Category")]
+        public string CategoryName { get; set; }
     }
 }
